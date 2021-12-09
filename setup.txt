@@ -3,7 +3,7 @@
 
 # --> Message Of The Day (MOTD): Funny Quotes
 # Full path of quote file
-quote_path="/home/mo/projects/msg_of_the_day"
+quote_path="/home/mo/projects/msg_of_the_day/hub.sh"
 # 
 term=$(basename $(tty))
 # Check if MOTD script exists
