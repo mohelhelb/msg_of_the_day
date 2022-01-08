@@ -2,8 +2,10 @@
 ## User-defined code
 
 # --> Message Of The Day (MOTD): Funny Quotes
+user=$(whoami)
+#
 # Full path of quote file
-quote_path="/home/mo/projects/msg_of_the_day/hub.sh"
+quote_path="/home/${user}/projects/msg_of_the_day/hub.sh"
 # 
 term=$(basename $(tty))
 # Check if MOTD script exists
@@ -11,7 +13,7 @@ if [[ -s ${quote_path} ]]; then
 	case ${term} in
 		0)
 			# Display quote only on terminal emulator 0
-			. ${quote_path} $COLUMNS
+			. ${quote_path} ${COLUMNS}
 			;;
 		tty[1-6])
 			# Display quote on virtual console 1-6
