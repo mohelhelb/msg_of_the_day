@@ -4,18 +4,20 @@
 #########################################
 
 # --> Script functions
-# Print quote
+# Print quote/author
 function print_quote {
 	local quote=$1
-	printf "%*s\n" ${margin} "${quote}"
+	local author=$2
+	printf "\n%*s\n%*s\n" ${margin} "${quote}" ${margin} "${author}"
 }
 # <-- Script functions
 # Quotation site
 wpage="www.brainyquote.com/quote_of_the_day"
 # Fallback quotes
-alt_quote1="Lorem ipsum dolor sit amet..."
+alt_quote1="I have not failed. I've just found 10,000 ways that won't work."
+author1="Thomas A. Edison"
 alt_quote2="Sometimes when my internet is down, I forget that the rest of my computer still works..."
-alt_quote3="Ut enim ad minim veniam..."
+author2=$(whoami)
 #
 timestamp=$(date +%s)
 # 
@@ -40,27 +42,26 @@ case $? in
 	0)
 		# Gather page content
 		wget -o ${log_file} -O ${html_file} ${wpage}
-		# Extract quote/author (Pattern: Funny Quote Of the Day) and write it to quote file
+		# Extract quote/author (Pattern: Funny Quote Of the Day) and write them to quote file
 		sed 's/<[^>]*>//g ; /^$/d' ${html_file} | sed -n "/^${pattern}$/{n ; N ; s/&#39;/'/g ; p}" > ${quote_file}
-		# Check if quote file exists and is not empty
-		if [[ -s ${quote_file} ]]; then
-			echo
-			while read line
-			do
-				# Print quote/author
-				print_quote "${line}"
-			done < ${quote_file}
+		# Create quote/author variables
+		quote=$(sed -n '1p' ${quote_file})
+		author=$(sed -n '2p' ${quote_file})
+		# Check if quote/author variables are not empty strings
+		if [[ -n ${quote} ]] && [[ -n ${author} ]]; then
+			# Print quote/author on terminal screen
+			print_quote "${quote}" "${author}"
 		else
 			# Print fallback quote 1
-			print_quote "${alt_quote1}"
+			print_quote "${alt_quote1}" "${author1}"
 		fi
 		;;
 	4)
 		# Print fallback quote 2 (Exit status 4: Network Failure)
-		print_quote "${alt_quote2}"
+		print_quote "${alt_quote2}" "${author2}"
 		;;
 	*)
-		# Print fallback quote 3
-		print_quote "${alt_quote3}"
+		# Print fallback quote 1
+		print_quote "${alt_quote1}" "${author1}"
 		;;
 esac
