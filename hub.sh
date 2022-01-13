@@ -19,10 +19,12 @@ author1="Thomas A. Edison"
 alt_quote2="Sometimes when my internet is down, I forget that the rest of my computer still works..."
 author2=$(whoami)
 #
-timestamp=$(date +%s)
+day=$(date +%d)
+month=$(date +%m)
+year=$(date +%y)
+timestamp="${day}${month}${year}"
 # 
 basedir="/tmp"
-log_file="${basedir}/log.${timestamp}"
 html_file="${basedir}/html.${timestamp}"
 quote_file="${basedir}/quote.${timestamp}"
 # Pattern
@@ -41,7 +43,7 @@ wget -q --spider ${wpage}
 case $? in
 	0)
 		# Gather page content
-		wget -o ${log_file} -O ${html_file} ${wpage}
+		wget -q -O ${html_file} ${wpage}
 		# Extract quote/author (Pattern: Funny Quote Of the Day) and write them to quote file
 		sed 's/<[^>]*>//g ; /^$/d' ${html_file} | sed -n "/^${pattern}$/{n ; N ; s/&#39;/'/g ; p}" > ${quote_file}
 		# Create quote/author variables
