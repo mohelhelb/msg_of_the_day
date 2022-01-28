@@ -11,6 +11,8 @@ function print_quote {
 	printf "\n%*s\n%*s\n" ${margin} "${quote}" ${margin} "${author}"
 }
 # <-- Script functions
+# Fetch user
+user=$(whoami)
 # Quotation site
 wpage="www.brainyquote.com/quote_of_the_day"
 # Fallback quotes
@@ -24,9 +26,9 @@ month=$(date +%m)
 year=$(date +%y)
 timestamp="${day}${month}${year}"
 # 
-basedir="/tmp"
-html_file="${basedir}/html.${timestamp}"
-quote_file="${basedir}/quote.${timestamp}"
+basedir="/home/${user}"
+html_file="${basedir}/html_file.txt"
+quote_file="${basedir}/quote_file.txt"
 # Pattern
 pattern="Funny Quote Of the Day"
 # Check first positional parameter validity
