@@ -8,7 +8,7 @@
 function print_quote {
 	local quote=$1
 	local author=$2
-	printf "\n%*s\n%*s\n" ${margin} "${quote}" ${margin} "${author}"
+	printf "%s\n%s\n" "${quote}" "${author}" > ${quote_file}
 }
 # <-- Script functions
 # Fetch user
@@ -19,25 +19,13 @@ wpage="www.brainyquote.com/quote_of_the_day"
 alt_quote1="I have not failed. I've just found 10,000 ways that won't work."
 author1="Thomas A. Edison"
 alt_quote2="Sometimes when my internet is down, I forget that the rest of my computer still works..."
-author2=$(whoami)
+author2=${user}
 #
-day=$(date +%d)
-month=$(date +%m)
-year=$(date +%y)
-timestamp="${day}${month}${year}"
-# 
 basedir="/home/${user}"
 html_file="${basedir}/html_file.txt"
 quote_file="${basedir}/quote_file.txt"
 # Pattern
 pattern="Funny Quote Of the Day"
-# Check first positional parameter validity
-margin=$1
-if [[ ${margin} =~ ^[0-9]+$ ]]; then
-	margin=$[ ${margin} - 1 ]
-else
-	margin=0
-fi
 # Clear out terminal screen
 clear
 # Gather page content
@@ -46,24 +34,16 @@ case $? in
 	0)
 		# Extract quote/author (Pattern: Funny Quote Of the Day) and write them to quote file
 		sed 's/<[^>]*>//g ; /^$/d' ${html_file} | sed -n "/^${pattern}$/{n ; N ; s/&#39;/'/g ; p}" > ${quote_file}
-		# Create quote/author variables
-		quote=$(sed -n '1p' ${quote_file})
-		author=$(sed -n '2p' ${quote_file})
-		# Check if quote/author variables are not empty strings
-		if [[ -n ${quote} ]] && [[ -n ${author} ]]; then
-			# Print quote/author on terminal screen
-			print_quote "${quote}" "${author}"
-		else
-			# Print fallback quote 1
-			print_quote "${alt_quote1}" "${author1}"
-		fi
+		exit
 		;;
 	4)
 		# Print fallback quote 2 (Exit status 4: Network Failure)
 		print_quote "${alt_quote2}" "${author2}"
+		exit
 		;;
 	*)
 		# Print fallback quote 1
 		print_quote "${alt_quote1}" "${author1}"
+		exit
 		;;
 esac
