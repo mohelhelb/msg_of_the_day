@@ -2,23 +2,45 @@
 ## User-defined code
 
 # --> Message Of The Day (MOTD): Funny Quotes
+# --> Script functions
+# Display quote along with author
+function display_quote {
+	local margin=$1
+	echo
+	while read entry
+	do
+		printf "%*s\n" ${margin} "${entry}"
+	done < ${quote}
+}
+# <-- Script functions
+# Fetch user
 user=$(whoami)
+# Set margin
+margin=$[ ${COLUMNS} - 1 ]
 #
-# Full path of quote file
-quote_path="/home/${user}/projects/msg_of_the_day/motd.sh"
+script="/home/${user}/projects/msg_of_the_day/motd.sh"
+quote="/home/${user}/.quote_file.txt"
 # 
 term=$(basename $(tty))
-# Check if MOTD script exists
-if [[ -s ${quote_path} ]]; then
-	case ${term} in
-		0)
-			# Display quote only on terminal emulator 0
-			. ${quote_path} ${COLUMNS}
-			;;
-		tty[1-6])
-			# Display quote on virtual console 1-6
-			. ${quote_path} 160
-			;;
-	esac
-fi
+# Clear out screen
+clear
+# Display quote only on terminal emulator 0 or virtual console 1-6
+case ${term} in
+	0)
+		# Check if script exists and execute permission is granted
+		if [[ -x ${script} ]]; then
+			# Execute script
+			. ${script}
+			# Check if quote_file exists and has a size greater than zero
+			if [[ -s ${quote} ]]; then
+				# Display quote along with author
+				display_quote ${margin}
+			fi
+		fi
+		;;
+	tty[1-6])
+		# Display quote along with author
+		display_quote 159
+		;;
+esac
 # <-- Message Of The Day (MOTD): Funny Quotes

@@ -4,7 +4,7 @@
 #########################################
 
 # --> Script functions
-# Print quote/author
+# Write quote along with author to quote_file file
 function print_quote {
 	local quote=$1
 	local author=$2
@@ -22,28 +22,23 @@ alt_quote2="Sometimes when my internet is down, I forget that the rest of my com
 author2=${user}
 #
 basedir="/home/${user}"
-html_file="${basedir}/html_file.txt"
-quote_file="${basedir}/quote_file.txt"
-# Pattern
+html_file="${basedir}/.html_file.txt"
+quote_file="${basedir}/.quote_file.txt"
+# Search pattern
 pattern="Funny Quote Of the Day"
-# Clear out terminal screen
-clear
 # Gather page content
 wget -q -O ${html_file} ${wpage}
 case $? in
 	0)
-		# Extract quote/author (Pattern: Funny Quote Of the Day) and write them to quote file
+		# Extract quote/author (Pattern: Funny Quote Of the Day) and write them to quote_file file
 		sed 's/<[^>]*>//g ; /^$/d' ${html_file} | sed -n "/^${pattern}$/{n ; N ; s/&#39;/'/g ; p}" > ${quote_file}
-		exit
 		;;
 	4)
 		# Print fallback quote 2 (Exit status 4: Network Failure)
 		print_quote "${alt_quote2}" "${author2}"
-		exit
 		;;
 	*)
 		# Print fallback quote 1
 		print_quote "${alt_quote1}" "${author1}"
-		exit
 		;;
 esac
