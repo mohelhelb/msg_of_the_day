@@ -40,12 +40,10 @@ else
 fi
 # Clear out terminal screen
 clear
-# Check page availability
-wget -q --spider ${wpage}
+# Gather page content
+wget -q -O ${html_file} ${wpage}
 case $? in
 	0)
-		# Gather page content
-		wget -q -O ${html_file} ${wpage}
 		# Extract quote/author (Pattern: Funny Quote Of the Day) and write them to quote file
 		sed 's/<[^>]*>//g ; /^$/d' ${html_file} | sed -n "/^${pattern}$/{n ; N ; s/&#39;/'/g ; p}" > ${quote_file}
 		# Create quote/author variables
