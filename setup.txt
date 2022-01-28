@@ -5,7 +5,7 @@
 user=$(whoami)
 #
 # Full path of quote file
-quote_path="/home/${user}/projects/msg_of_the_day/hub.sh"
+quote_path="/home/${user}/projects/msg_of_the_day/motd.sh"
 # 
 term=$(basename $(tty))
 # Check if MOTD script exists
