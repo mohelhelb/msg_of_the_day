@@ -9,5 +9,5 @@ This Bash shell script has the following functionalities:
 The steps that should be taken to set up this script are as follows:
 
 - Clone the GitHub repository.
-- Append the snippet of code in the *setup.txt* file to the hidden *bashrc* file.
-- Modify the *quote_path* variable in the *bashrc* file accordingly.
+- **Append** the snippet of code in the *setup.txt* file to the hidden *.bashrc* file.
+- Modify the *script* and *quote* variables in the *.bashrc* file accordingly.
