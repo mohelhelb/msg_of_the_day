@@ -1,3 +1,4 @@
+#!/bin/bash
 
 ## User-defined code
 
