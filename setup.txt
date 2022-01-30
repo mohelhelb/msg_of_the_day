@@ -2,68 +2,10 @@
 ## User-defined code
 
 # --> Message Of The Day (MOTD): Funny Quotes
-# --> Script functions
-# Display quote along with author
-function display_quote {
-	local margin=$1
-	echo
-	while read entry
-	do
-		printf "%*s\n" ${margin} "${entry}"
-	done < ${quote}
-}
-# <-- Script functions
-# Fetch user
-user=$(whoami)
-# Set margin
-margin=$[ ${COLUMNS} - 1 ]
-#
-script="/home/${user}/projects/msg_of_the_day/motd.sh"
-quote="/home/${user}/.quote_file.txt"
-# 
-term=$(basename $(tty))
-# Clear out screen
-clear
-# Display quote only on terminal emulator 0 or virtual console 1-6
-case ${term} in
-	0)
-		# Check if script exists and execute permission is granted
-		if [[ -x ${script} ]]; then
-			# Execute script
-			. ${script}
-			# Check if quote_file exists and has a size greater than zero
-			if [[ -s ${quote} ]]; then
-				# Display quote along with author
-				display_quote ${margin}
-			fi
-		fi
-		;;
-	tty[1-6])
-		# Display quote along with author
-		display_quote 159
-		;;
-esac
-# <-- Message Of The Day (MOTD): Funny Quotes
-
-## User-defined code
-
-# --> Message Of The Day (MOTD): Funny Quotes
-# --> Script functions
-# Display quote along with author
-function display_quote {
-	local margin=$1
-	echo
-	while read entry
-	do
-		printf "%*s\n" ${margin} "${entry}"
-	done < ${quote}
-}
-# <-- Script functions
 # Fetch user
 user=$(whoami)
 #
 script="/home/${user}/projects/msg_of_the_day/motd.sh"
-quote="/home/${user}/.quote_file.txt"
 # 
 term=$(basename $(tty))
 # Set margin
@@ -79,13 +21,12 @@ case ${term} in
 	0|tty[1-6])
 		# Check if script exists and execute permission is granted
 		if [[ -x ${script} ]]; then
-			# Execute script
-			. ${script}
-			# Check if quote_file exists and has a size greater than zero
-			if [[ -s ${quote} ]]; then
-				# Display quote along with author
-				display_quote ${margin}
-			fi
+			echo
+			# Print quote along with author
+			while read entry
+			do
+				printf "%*s\n" ${margin} "${entry}"
+			done < <(. ${script}) 
 		fi
 		;;
 esac
