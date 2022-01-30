@@ -4,11 +4,11 @@
 #########################################
 
 # --> Script functions
-# Write quote along with author to quote_file file
+# Print alternative quote along with author
 function print_quote {
 	local quote=$1
 	local author=$2
-	printf "%s\n%s\n" "${quote}" "${author}" > ${quote_file}
+	printf "%s\n%s\n" "${quote}" "${author}"
 }
 # <-- Script functions
 # Fetch user
@@ -23,15 +23,14 @@ author2=${user}
 #
 basedir="/home/${user}"
 html_file="${basedir}/.html_file.txt"
-quote_file="${basedir}/.quote_file.txt"
 # Search pattern
 pattern="Funny Quote Of the Day"
 # Gather page content
 wget -q -O ${html_file} ${wpage}
 case $? in
 	0)
-		# Extract quote/author (Pattern: Funny Quote Of the Day) and write them to quote_file file
-		sed 's/<[^>]*>//g ; /^$/d' ${html_file} | sed -n "/^${pattern}$/{n ; N ; s/&#39;/'/g ; p}" > ${quote_file}
+		# Extract quote/author (Pattern: Funny Quote Of the Day) and write them to STDOUT
+		sed 's/<[^>]*>//g ; /^$/d' ${html_file} | sed -n "/^${pattern}$/{n ; N ; s/&#39;/'/g ; p}"
 		;;
 	4)
 		# Print fallback quote 2 (Exit status 4: Network Failure)
