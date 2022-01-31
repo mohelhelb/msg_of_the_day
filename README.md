@@ -9,6 +9,10 @@ This Bash shell script has the following functionalities:
 The steps that should be taken to set up this script are as follows:
 
 - Clone the GitHub repository (preferably into */home/"user"/projects/*).
+- Install the **cowsay** program on your system.
+```
+sudo apt install cowsay
+```
 - **Append** the following snippet of code to the hidden *.bashrc* file (*/home/"user"/.bashrc*):
 ```
 ## User-defined code
@@ -20,7 +24,7 @@ user=$(whoami)
 setup="/home/${user}/projects/msg_of_the_day/setup.sh"
 # Check if setup.sh script exists and execute permission is granted
 if [[ -x ${setup} ]]; then
-	${setup}
+	. ${setup}
 fi
 # <-- Message Of The Day (MOTD): Funny Quotes
 ```
