@@ -9,12 +9,6 @@ user=$(whoami)
 script="/home/${user}/projects/msg_of_the_day/motd.sh"
 # 
 term=$(basename $(tty))
-# Set margin
-if [[ -z ${COLUMNS} ]]; then
-	margin=159
-else
-	margin=$[ ${COLUMNS} - 1 ]
-fi
 # Clear out screen
 clear
 # Display quote only on terminal emulator 0 or virtual console 1-6
@@ -22,12 +16,8 @@ case ${term} in
 	0|tty[1-6])
 		# Check if script exists and execute permission is granted
 		if [[ -x ${script} ]]; then
-			echo
-			# Print quote along with author
-			while read entry
-			do
-				printf "%*s\n" ${margin} "${entry}"
-			done < <(. ${script}) 
+			# Cowsay quote along with author
+			. ${script} | cowsay -wn
 		fi
 		;;
 esac
