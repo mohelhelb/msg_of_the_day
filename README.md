@@ -13,14 +13,14 @@ This Bash shell script has the following functionalities:
 The steps that should be taken to set up this script are as follows:
 
 - Clone the GitHub repository (preferably into */home/"user"/projects/*).
-[mkdir ~/projects/]
-git clone git@github.com:mohelhelb/msg_of_the_day.git [~/projects/msg_of_the_day/]
-
+	```
+	[mkdir ~/projects/]
+	git clone git@github.com:mohelhelb/msg_of_the_day.git [~/projects/msg_of_the_day/]
+	```
 - Install the *cowsay* program on your system.
 	```
 	sudo apt install cowsay
 	```
-
 - **Append** the following snippet of code to the hidden *.bashrc* file (*/home/"user"/.bashrc*):
 	```
 	## User-defined code
@@ -36,9 +36,7 @@ git clone git@github.com:mohelhelb/msg_of_the_day.git [~/projects/msg_of_the_day
 	fi
 	# <-- Message Of The Day (MOTD): Funny Quotes
 	```
-
 - Modify the *basedir* variable (`basedir="/home/${user}"`) in the *motd.sh* script, the *script* variable (`script="/home/${user}/projects/msg_of_the_day/motd.sh"`) in the *setup.sh* script and the above-defined *setup* variable (`setup="/home/${user}/projects/msg_of_the_day/setup.sh"`) accordingly.
-
 - Execute the script.
 	```
 	[sudo chmod a+x ~/projects/backup_files/backup_files.sh]
